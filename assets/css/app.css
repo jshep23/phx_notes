@@ -1,0 +1,19 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* This file is for your main application CSS */
+
+/* variable to hold the brand color */
+:root {
+  --bg-brand: 255, 255, 0;
+  --text-brand: 0, 0, 0;
+}
+
+.bg-brand\/5 {
+  background-color: rgba(var(--bg-brand), 0.05);
+}
+
+.text-brand {
+  color: rgb(var(--text-brand));
+}
