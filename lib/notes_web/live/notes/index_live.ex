@@ -1,4 +1,4 @@
-defmodule NotesWeb.IndexLive do
+defmodule NotesWeb.Notes.IndexLive do
   alias NotesWeb.UserDetailsLive
   alias NotesWeb.UserNotesLive
   alias Notes.Domain.User

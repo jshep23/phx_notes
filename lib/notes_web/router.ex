@@ -17,7 +17,8 @@ defmodule NotesWeb.Router do
   scope "/", NotesWeb do
     pipe_through :browser
 
-    live "/", IndexLive, :index
+    get "/", MenuController, :index
+    live "/notes", Notes.IndexLive, :index
   end
 
   # Other scopes may use custom stacks.

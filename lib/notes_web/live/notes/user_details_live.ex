@@ -25,12 +25,7 @@ defmodule NotesWeb.UserDetailsLive do
   end
 
   def mount(_params, _session, socket) do
-    form =
-      %User{}
-      |> User.changeset()
-      |> with_validation()
-      |> to_form()
-
+    form = connected?(socket) |> new_form()
     {:ok, assign(socket, form: form, user: nil)}
   end
 
@@ -53,5 +48,18 @@ defmodule NotesWeb.UserDetailsLive do
     else
       {:noreply, socket |> put_flash(:error, "Invalid form")}
     end
+  end
+
+  defp new_form(true) do
+    %User{}
+    |> User.changeset()
+    |> with_validation()
+    |> to_form()
+  end
+
+  defp new_form(false) do
+    %User{}
+    |> User.changeset()
+    |> to_form()
   end
 end
