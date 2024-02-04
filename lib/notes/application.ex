@@ -12,6 +12,8 @@ defmodule Notes.Application do
       NotesWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Notes.PubSub},
+      Notes.FeatureFlagServer,
+      Notes.JobScheduler,
       # Start Finch
       {Finch, name: Notes.Finch},
       # Start the Endpoint (http/https)

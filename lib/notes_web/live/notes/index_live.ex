@@ -4,7 +4,7 @@ defmodule NotesWeb.Notes.IndexLive do
   alias Notes.Domain.User
   use NotesWeb, :live_view
   use NotesWeb.ValidatingForm
-  use NotesWeb.PubSub
+  use Notes.PubSub
 
   def render(assigns) do
     ~H"""

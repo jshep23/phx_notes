@@ -1,4 +1,9 @@
 defmodule Notes.Domain.Note do
+  @moduledoc """
+  Although we are not using a database,
+  Ecto can still be used to handle domain validation
+  and provide compile time type checking.
+  """
   alias Ecto.Changeset
   alias Notes.AtomType
   alias Notes.Domain.NoteType

@@ -1,9 +1,11 @@
-defmodule NotesWeb.PubSub do
+defmodule Notes.PubSub do
   defmacro __using__(_) do
     quote do
-      alias NotesWeb.PubSub
+      alias Notes.PubSub
       @user_created_topic "user:created"
       @change_user_topic "user:change"
+      @feature_flag_changed_topic "feature_flag:changed"
+      @new_dad_joke_topic "new_dad_joke"
 
       def subscribe(topic) when is_binary(topic) do
         Phoenix.PubSub.subscribe(Notes.PubSub, topic)
