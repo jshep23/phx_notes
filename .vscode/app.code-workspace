@@ -1,0 +1,12 @@
+{
+    "folders": [
+        {
+            "path": "./main_liveview_application",
+            "name": "Main LiveView Application"
+        },
+        {
+            "path": "./feature_flags_micro_service",
+            "name": "Feature Flags Micro Service"
+        }
+    ],
+}
