@@ -2,6 +2,8 @@ import Config
 
 import_config "dev.exs"
 
+config :notes, :feature_flags_node, :"feature_flags_service@127.0.0.1"
+
 config :libcluster,
   topologies: [
     local: [

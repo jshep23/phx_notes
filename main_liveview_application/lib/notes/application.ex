@@ -23,15 +23,9 @@ defmodule Notes.Application do
       # {Notes.Worker, arg}
     ]
 
-    IO.puts("Mix.env() = #{Mix.env()}")
-
     children =
       if Mix.env() == :dev_distributed do
-        [
-          {Cluster.Supervisor,
-           [Application.get_env(:libcluster, :topologies), [name: Notes.ClusterSupervisor]]}
-          | children
-        ]
+        add_cluster_children(children)
       else
         children
       end
@@ -40,6 +34,17 @@ defmodule Notes.Application do
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Notes.Supervisor]
     Supervisor.start_link(children, opts)
+  end
+
+  defp add_cluster_children(children) do
+    [
+      {Cluster.Supervisor,
+       [Application.get_env(:libcluster, :topologies), [name: Notes.ClusterSupervisor]]}
+      | [
+          {Notes.NodeMonitor, [Application.get_env(:notes, :feature_flags_node)]}
+          | children
+        ]
+    ]
   end
 
   # Tell Phoenix to update the endpoint configuration
