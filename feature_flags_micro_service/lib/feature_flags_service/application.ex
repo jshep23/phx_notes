@@ -1,4 +1,4 @@
-defmodule Notes.Application do
+defmodule FeatureFlagsService.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
@@ -9,23 +9,20 @@ defmodule Notes.Application do
   def start(_type, _args) do
     children = [
       # Start the Telemetry supervisor
-      NotesWeb.Telemetry,
+      FeatureFlagsServiceWeb.Telemetry,
       # Start the PubSub system
-      {Phoenix.PubSub, name: Notes.PubSub},
+      {Phoenix.PubSub, name: FeatureFlagsService.PubSub},
       Supervisor.child_spec({Phoenix.PubSub, name: System.PubSub}, id: :system_pubsub),
-      Notes.FeatureFlagServer,
-      Notes.JobScheduler,
-      # Start Finch
-      {Finch, name: Notes.Finch},
+      FeatureFlagsService.Flags,
       # Start the Endpoint (http/https)
-      NotesWeb.Endpoint
-      # Start a worker by calling: Notes.Worker.start_link(arg)
-      # {Notes.Worker, arg}
+      FeatureFlagsServiceWeb.Endpoint
+      # Start a worker by calling: FeatureFlagsService.Worker.start_link(arg)
+      # {FeatureFlagsService.Worker, arg}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Notes.Supervisor]
+    opts = [strategy: :one_for_one, name: FeatureFlagsService.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
@@ -33,7 +30,7 @@ defmodule Notes.Application do
   # whenever the application is updated.
   @impl true
   def config_change(changed, _new, removed) do
-    NotesWeb.Endpoint.config_change(changed, removed)
+    FeatureFlagsServiceWeb.Endpoint.config_change(changed, removed)
     :ok
   end
 end

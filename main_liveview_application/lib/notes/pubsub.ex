@@ -11,8 +11,16 @@ defmodule Notes.PubSub do
         Phoenix.PubSub.subscribe(Notes.PubSub, topic)
       end
 
+      def subscribe(:system, topic) when is_binary(topic) do
+        Phoenix.PubSub.subscribe(System.PubSub, topic)
+      end
+
       def subscribe(topics) when is_list(topics) do
         Enum.each(topics, &subscribe/1)
+      end
+
+      def subscribe(:system, topics) when is_list(topics) do
+        Enum.each(topics, &subscribe(:system, &1))
       end
 
       def publish(topic, message \\ nil) do

@@ -1,12 +1,98 @@
 {
     "folders": [
         {
-            "path": "./main_liveview_application",
+            "path": "../main_liveview_application",
             "name": "Main LiveView Application"
         },
         {
-            "path": "./feature_flags_micro_service",
+            "path": "../feature_flags_micro_service",
             "name": "Feature Flags Micro Service"
-        }
+        },
+        {
+            "path": "../",
+            "name": "root"
+        },        
     ],
+    "tasks": {
+        "version": "2.0.0",
+        "tasks": [
+            {
+                "label": "LiveView App",
+                "command": "elixir --name notes@127.0.0.1 --cookie secret_cookie -S mix phx.server",
+                "type": "shell",
+                "args": [],
+                "options": {
+                    "cwd": "${workspaceFolder:Main LiveView Application}",
+                },
+                "problemMatcher": [
+                    "$tsc"
+                ],
+                "presentation": {
+                    "reveal": "always"
+                },
+                "group": "build"
+            },
+            {
+                "label": "Feature Flags Service",
+                "command": "elixir --name feature_flags_service@127.0.0.1 --cookie secret_cookie -S mix phx.server",
+                "type": "shell",
+                "args": [],
+                "options": {
+                    "cwd": "${workspaceFolder:Feature Flags Micro Service}",
+                },
+                "problemMatcher": [
+                    "$tsc"
+                ],
+                "presentation": {
+                    "reveal": "always"
+                },
+                "group": "build"
+            },
+            {
+                "label": "Distributed App",
+                "dependsOn": ["LiveView App", "Feature Flags Service"],
+                "type": "shell",
+                "problemMatcher": [
+                    "$tsc"
+                ],
+                "presentation": {
+                    "reveal": "always"
+                },
+                "group": "build"
+            }
+        ]
+    },
+    "launch": {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "type": "mix_task",
+                "name": "LiveView App (No-Cluster)",
+                "request": "launch",
+                "projectDir": "${workspaceRoot:Main LiveView Application}",      
+                "exitAfterTaskReturns": false, 
+                "task": "phx.server",
+                "taskArgs": ["--sname", "notes_app@localhost", "--cookie", "ultra_secret_cookie"],
+                "debugAutoInterpretAllModules": false,
+                "debugInterpretModulesPatterns": ["BmvpWeb*"]
+            },          
+            {
+                "type": "mix_task",
+                "name": "Feature Flags Service (No-Cluster)",
+                "request": "launch",
+                "projectDir": "${workspaceRoot:Feature Flags Micro Service}",      
+                "exitAfterTaskReturns": false,                 
+                "task": "phx.server",
+                "taskArgs": ["--sname", "flags_service@localhost", "--cookie", "ultra_secret_cookie"],
+                "debugAutoInterpretAllModules": false,
+                "debugInterpretModulesPatterns": ["BmvpWeb*"]
+            },
+        ],
+        "compounds": [
+            {
+                "name": "Distributed App",
+                "configurations": ["LiveView App (No-Cluster)", "Feature Flags Service (No-Cluster)"]
+            }
+        ]
+    }
 }

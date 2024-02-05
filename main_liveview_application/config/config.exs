@@ -20,6 +20,8 @@ config :notes, NotesWeb.Endpoint,
   pubsub_server: Notes.PubSub,
   live_view: [signing_salt: "R+1w5upo"]
 
+config :notes, System.PubSub, adapter: Phoenix.PubSub.PG2
+
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails
