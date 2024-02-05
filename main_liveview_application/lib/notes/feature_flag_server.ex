@@ -1,6 +1,7 @@
 defmodule Notes.FeatureFlagServer do
   use GenServer
-  use Notes.PubSub
+  alias Notes.PubSub
+  use Notes.PubSub.Topics.FeatureFlagTopics
 
   def start_link(_) do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
@@ -45,12 +46,12 @@ defmodule Notes.FeatureFlagServer do
 
   def add_feature_flag(flag) do
     GenServer.cast(__MODULE__, {:add_feature_flag, flag})
-    publish(@feature_flag_changed_topic)
+    PubSub.publish(@feature_flag_changed_topic)
   end
 
   def remove_feature_flag(name) do
     GenServer.cast(__MODULE__, {:remove_feature_flag, name})
-    publish(@feature_flag_changed_topic)
+    PubSub.publish(@feature_flag_changed_topic)
   end
 
   def toggle_feature_flag(name) when is_binary(name),
@@ -58,6 +59,6 @@ defmodule Notes.FeatureFlagServer do
 
   def toggle_feature_flag(name) do
     GenServer.cast(__MODULE__, {:toggle_feature_flag, name})
-    publish(@feature_flag_changed_topic)
+    PubSub.publish(@feature_flag_changed_topic)
   end
 end

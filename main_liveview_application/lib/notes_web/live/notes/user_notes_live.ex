@@ -2,9 +2,10 @@ defmodule NotesWeb.UserNotesLive do
   alias Notes.Domain.Note
   alias Notes.Domain.NoteType
   use NotesWeb, :live_view
-  use Notes.PubSub
+  import Notes.PubSub
   use NotesWeb.ValidatingForm
   alias Notes.Domain.User
+  use Notes.PubSub.Topics.NotesTopics
   import NotesWeb.CoreComponents
   import NotesWeb.StickyNote
   import NotesWeb.Dialogs

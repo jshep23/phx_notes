@@ -8,7 +8,7 @@ defmodule Notes.Repository.FeatureFlagGenServerRepo do
     %__MODULE__{}
   end
 
-  defimpl FeatureFlagRepo, for: Atom do
+  defimpl FeatureFlagRepo, for: __MODULE__ do
     alias Notes.Domain.FeatureFlag
 
     def seed(_) do

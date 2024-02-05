@@ -1,8 +1,11 @@
 defmodule NotesWeb.FeatureFlags.FeaturesLive do
-  alias Notes.Repository.Protocol.FeatureFlagRepo
-  alias Notes.Parsers
+  require Logger
+  alias Notes.Services.FeatureFlagService
   use NotesWeb, :live_view
-  use Notes.PubSub
+  use Notes.PubSub.Topics.FeatureFlagTopics
+  use Notes.PubSub.Topics.NotesTopics
+  alias Notes.FeatureFlagsPubSub
+  alias Notes.PubSub
 
   def render(assigns) do
     ~H"""
@@ -24,26 +27,19 @@ defmodule NotesWeb.FeatureFlags.FeaturesLive do
     """
   end
 
-  def mount(%{"use_gen_server" => use_gen_server}, _, socket) do
+  def mount(_, _, socket) do
     if connected?(socket) do
-      subscribe(@feature_flag_changed_topic)
-      subscribe(@new_dad_joke_topic)
+      FeatureFlagsPubSub.subscribe(@feature_flag_changed_topic)
+      PubSub.subscribe(@new_dad_joke_topic)
 
-      # Hack to use different repos. Will optionally use a future
-      # Distributed repo when I get to it
-      # Normally you would set this up in the application config
-      repo = get_repo(use_gen_server)
-
-      enabled_flags = repo |> FeatureFlagRepo.get_enabled()
-
-      {:ok, socket |> assign(feature_flags: enabled_flags, repo: repo, dad_joke: "")}
+      {:ok, socket |> assign(feature_flags: FeatureFlagService.get_enabled(), dad_joke: "")}
     else
       {:ok, socket |> assign(feature_flags: [], dad_joke: "")}
     end
   end
 
-  def handle_info(@feature_flag_changed_topic, %{assigns: %{repo: repo}} = socket) do
-    {:noreply, socket |> assign(feature_flags: FeatureFlagRepo.get_enabled(repo))}
+  def handle_info(@feature_flag_changed_topic, socket) do
+    {:noreply, socket |> assign(feature_flags: FeatureFlagService.get_enabled())}
   end
 
   def handle_info({:new_dad_joke, joke}, socket) do
@@ -54,13 +50,5 @@ defmodule NotesWeb.FeatureFlags.FeaturesLive do
     flag = flags |> Enum.find(&(&1.name == name))
 
     flag && flag.enabled
-  end
-
-  defp get_repo(use_gen_server) do
-    if Parsers.parse_boolean(use_gen_server) do
-      Notes.Repository.FeatureFlagGenServerRepo
-    else
-      raise "Only GenServer repo is supported at the moment"
-    end
   end
 end

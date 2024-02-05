@@ -19,8 +19,11 @@ defmodule NotesWeb.Router do
 
     get "/", MenuController, :index
     live "/notes", Notes.IndexLive, :index
-    live "/feature_flags/gen_server", FeatureFlags.FeatureFlagsGenServerLive, :index
-    live "/feature_flags/features", FeatureFlags.FeaturesLive, :index
+
+    scope "/feature_flags" do
+      live "/config", FeatureFlags.FeatureFlagsConfigLive, :index
+      live "/features", FeatureFlags.FeaturesLive, :index
+    end
   end
 
   # Other scopes may use custom stacks.

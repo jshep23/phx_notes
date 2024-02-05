@@ -12,7 +12,7 @@ defmodule Notes.Application do
       NotesWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Notes.PubSub},
-      Supervisor.child_spec({Phoenix.PubSub, name: System.PubSub}, id: :system_pubsub),
+      Supervisor.child_spec({Phoenix.PubSub, name: Remote.PubSub}, id: :remote_pubsub),
       Notes.FeatureFlagServer,
       Notes.JobScheduler,
       # Start Finch
@@ -22,6 +22,19 @@ defmodule Notes.Application do
       # Start a worker by calling: Notes.Worker.start_link(arg)
       # {Notes.Worker, arg}
     ]
+
+    IO.puts("Mix.env() = #{Mix.env()}")
+
+    children =
+      if Mix.env() == :dev_distributed do
+        [
+          {Cluster.Supervisor,
+           [Application.get_env(:libcluster, :topologies), [name: Notes.ClusterSupervisor]]}
+          | children
+        ]
+      else
+        children
+      end
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options

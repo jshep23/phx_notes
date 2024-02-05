@@ -2,7 +2,8 @@ defmodule NotesWeb.UserDetailsLive do
   alias Notes.Domain.User
   use NotesWeb, :live_view
   use NotesWeb.ValidatingForm
-  use Notes.PubSub
+  use Notes.PubSub.Topics.NotesTopics
+  import Notes.PubSub
   import NotesWeb.CoreComponents
 
   def render(assigns) do

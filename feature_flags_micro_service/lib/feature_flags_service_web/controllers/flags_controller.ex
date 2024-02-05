@@ -14,7 +14,7 @@ defmodule FeatureFlagsServiceWeb.FlagsController do
   end
 
   def announce_self(conn, _params) do
-    send_to_all_nodes("feature_flags_service:status", %{
+    publish("feature_flags_service:status", %{
       "service" => "feature_flags",
       "status" => "available"
     })

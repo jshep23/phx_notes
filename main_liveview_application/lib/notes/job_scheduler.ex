@@ -1,7 +1,10 @@
 defmodule Notes.JobScheduler do
   use GenServer
-  alias Notes.FeatureFlagServer
-  use Notes.PubSub
+  alias Notes.Services.FeatureFlagService
+  alias Notes.PubSub
+  alias Notes.FeatureFlagsPubSub
+  use Notes.PubSub.Topics.FeatureFlagTopics
+  use Notes.PubSub.Topics.NotesTopics
 
   @dad_joke_interval 10_000
 
@@ -10,12 +13,13 @@ defmodule Notes.JobScheduler do
   end
 
   def init(_) do
-    subscribe(@feature_flag_changed_topic)
-    {:ok, schedule_jobs()}
+    FeatureFlagsPubSub.subscribe(@feature_flag_changed_topic)
+    schedule_jobs(:wait)
+    {:ok, []}
   end
 
   def handle_info(:new_dad_joke, _) do
-    publish(@new_dad_joke_topic, {:new_dad_joke, Notes.Repository.DadJokeRepo.get_joke()})
+    PubSub.publish(@new_dad_joke_topic, {:new_dad_joke, Notes.Repository.DadJokeRepo.get_joke()})
     {:noreply, schedule_jobs()}
   end
 
@@ -23,8 +27,16 @@ defmodule Notes.JobScheduler do
     {:noreply, schedule_jobs()}
   end
 
+  def handle_info(:schedule_jobs, _) do
+    {:noreply, schedule_jobs()}
+  end
+
+  defp schedule_jobs(:wait, ms \\ 5000) do
+    Process.send_after(self(), :schedule_jobs, ms)
+  end
+
   defp schedule_jobs() do
-    flags = FeatureFlagServer.get_enabled_feature_flags()
+    flags = FeatureFlagService.get_enabled()
     scheduled_jobs = %{}
 
     scheduled_jobs =

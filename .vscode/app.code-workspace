@@ -18,7 +18,7 @@
         "tasks": [
             {
                 "label": "LiveView App",
-                "command": "elixir --name notes@127.0.0.1 --cookie secret_cookie -S mix phx.server",
+                "command": "export MIX_ENV=dev_distributed && elixir --name notes@127.0.0.1 --cookie secret_cookie -S mix phx.server",
                 "type": "shell",
                 "args": [],
                 "options": {

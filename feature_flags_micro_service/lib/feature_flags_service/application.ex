@@ -12,7 +12,7 @@ defmodule FeatureFlagsService.Application do
       FeatureFlagsServiceWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: FeatureFlagsService.PubSub},
-      Supervisor.child_spec({Phoenix.PubSub, name: System.PubSub}, id: :system_pubsub),
+      Supervisor.child_spec({Phoenix.PubSub, name: Remote.PubSub}, id: :remote_pubsub),
       FeatureFlagsService.Flags,
       # Start the Endpoint (http/https)
       FeatureFlagsServiceWeb.Endpoint
