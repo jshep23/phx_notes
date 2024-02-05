@@ -9,13 +9,12 @@ defmodule Notes.Repository.FeatureFlagDistributedRepo do
 
   defimpl FeatureFlagRepo, for: __MODULE__ do
     alias Notes.FeatureFlagsPubSub
-    alias Notes.Domain.FeatureFlag
     use Notes.PubSub.Topics.FeatureFlagTopics
 
     def seed(repo) do
       flags = [
-        %FeatureFlag{name: :basketball_tutorials, enabled: false},
-        %FeatureFlag{name: :dad_jokes, enabled: false}
+        %{name: :basketball_tutorials, enabled: false},
+        %{name: :dad_jokes, enabled: false}
       ]
 
       Enum.each(flags, &add(repo, &1))

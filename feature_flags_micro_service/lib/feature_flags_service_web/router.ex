@@ -12,7 +12,7 @@ defmodule FeatureFlagsServiceWeb.Router do
 
     scope "/flags" do
       get "/", FlagsController, :get_all
-      post "/toggle", FlagsController, :toggle
+      put "/toggle", FlagsController, :toggle
       get "/announce", FlagsController, :announce_self
     end
   end

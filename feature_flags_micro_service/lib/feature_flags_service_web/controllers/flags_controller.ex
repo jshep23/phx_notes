@@ -13,13 +13,8 @@ defmodule FeatureFlagsServiceWeb.FlagsController do
     json(conn, %{status: "ok"})
   end
 
-  def announce_self(conn, _params) do
-    publish("feature_flags_service:status", %{
-      "service" => "feature_flags",
-      "status" => "available"
-    })
-
-    put_format(conn, "text/plain")
-    |> text("Ok")
+  def add(conn, %{"name" => _name, "enabled" => _enabled} = flag) do
+    Flags.add_feature_flag(flag)
+    json(conn, %{status: "ok"})
   end
 end
