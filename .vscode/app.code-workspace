@@ -74,13 +74,17 @@
                 "task": "phx.server",              
                 "debugAutoInterpretAllModules": false,
                 "debugInterpretModulesPatterns": ["BmvpWeb*"]
-            }
-        ],
-        "compounds": [
+            },          
             {
-                "name": "Distributed App",
-                "configurations": ["LiveView App (No-Cluster)", "Feature Flags Service (No-Cluster)"]
-            }
+                "type": "mix_task",
+                "name": "Feature Flags Service (No-Cluster)",
+                "request": "launch",
+                "projectDir": "${workspaceRoot:Feature Flags Micro Service}",      
+                "exitAfterTaskReturns": false,                 
+                "task": "phx.server",              
+                "debugAutoInterpretAllModules": false,
+                "debugInterpretModulesPatterns": ["BmvpWeb*"]
+            },
         ]
     }
 }
