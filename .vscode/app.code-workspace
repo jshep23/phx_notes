@@ -71,8 +71,7 @@
                 "request": "launch",
                 "projectDir": "${workspaceRoot:Main LiveView Application}",      
                 "exitAfterTaskReturns": false, 
-                "task": "phx.server",
-                "taskArgs": ["--sname", "notes_app@localhost", "--cookie", "ultra_secret_cookie"],
+                "task": "phx.server",              
                 "debugAutoInterpretAllModules": false,
                 "debugInterpretModulesPatterns": ["BmvpWeb*"]
             },          
@@ -82,8 +81,7 @@
                 "request": "launch",
                 "projectDir": "${workspaceRoot:Feature Flags Micro Service}",      
                 "exitAfterTaskReturns": false,                 
-                "task": "phx.server",
-                "taskArgs": ["--sname", "flags_service@localhost", "--cookie", "ultra_secret_cookie"],
+                "task": "phx.server",              
                 "debugAutoInterpretAllModules": false,
                 "debugInterpretModulesPatterns": ["BmvpWeb*"]
             },

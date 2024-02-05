@@ -81,3 +81,4 @@ config :swoosh, :api_client, false
 
 config :notes, :feature_flag_repo, Notes.Repository.FeatureFlagGenServerRepo
 config :notes, :feature_flag_pub_sub, Notes.PubSub
+config :notes, :feature_flag_source, :local

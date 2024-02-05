@@ -15,3 +15,4 @@ config :libcluster,
 
 config :notes, :feature_flag_repo, Notes.Repository.FeatureFlagDistributedRepo
 config :notes, :feature_flag_pub_sub, Remote.PubSub
+config :notes, :feature_flag_source, :remote
