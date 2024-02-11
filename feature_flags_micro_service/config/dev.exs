@@ -16,6 +16,15 @@ config :feature_flags_service, FeatureFlagsServiceWeb.Endpoint,
   secret_key_base: "YaxFUouNWhE0F9kU4XIlwKEO+KwKDRT0wtryIe8L4izZXUJ0a7TIKERVqjds3ye5",
   watchers: []
 
+config :feature_flags_service, FeatureFlagsServiceWeb.Endpoint,
+  live_reload: [
+    patterns: [
+      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"lib/feature_flags_service_web/(controllers|live|components)/.*(ex|heex)$",
+      ~r"lib/feature_flags_service/.*(ex)$"
+    ]
+  ]
+
 # config :feature_flags_service, :cookie, "super-secret-key"
 
 # ## SSL Support

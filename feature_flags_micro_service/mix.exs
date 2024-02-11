@@ -5,7 +5,7 @@ defmodule FeatureFlagsService.MixProject do
     [
       app: :feature_flags_service,
       version: "0.1.0",
-      elixir: "~> 1.14",
+      elixir: "~> 1.16",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
@@ -33,6 +33,7 @@ defmodule FeatureFlagsService.MixProject do
   defp deps do
     [
       {:phoenix, "~> 1.7.7"},
+      {:phoenix_live_reload, "~> 1.2", only: [:dev]},
       {:phoenix_live_dashboard, "~> 0.8.0"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
